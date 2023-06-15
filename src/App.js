@@ -1,83 +1,149 @@
-import { useState } from 'react';
-const rootUrl = 'https://e-commerce-silkland.onrender.com';
+import React, { useState } from 'react';
+
+const rootUrl = 'https://e-commerce-silkland.onrender.com/api/v1';
 
 function App() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [registerData, setRegisterData] = useState({
+    firstName: '',
+    email: '',
+    password: '',
+  });
 
-  const handleSubmit = async (e) => {
+  const [loginData, setLoginData] = useState({
+    email: '',
+    password: '',
+  });
+
+  const handleRegister = async (e) => {
     e.preventDefault();
-    if (!email || !password) return;
-    const user = { email, password };
 
     try {
-      const url = `${rootUrl}/api/v1/auth/login`;
-      // const url = `/api/v1/auth/login`;
-      await fetch(url, {
+      const url = `${rootUrl}/auth/register`;
+      const response = await fetch(url, {
         method: 'POST',
         headers: {
-          'Content-type': 'application/json',
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(user),
+        body: JSON.stringify(registerData),
       });
-      setPassword('');
-      setEmail('');
+
+      if (response.ok) {
+        console.log('Registration successful');
+      } else {
+        console.log('Error during registration');
+      }
     } catch (error) {
       console.log(error);
     }
   };
 
-  const fetchTesting = async () => {
-    const url = `${rootUrl}/api/v1`;
-    // const url = `/api/v1`;
-    await fetch(url);
-  };
-  const fetchLogout = async () => {
-    const url = `${rootUrl}/api/v1/auth/logout`;
-    // const url = `/api/v1/auth/logout`;
-    await fetch(url);
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    try {
+      const url = `${rootUrl}/auth/login`;
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(loginData),
+      });
+
+      if (response.ok) {
+        console.log('Login successful');
+      } else {
+        console.log('Error during login');
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
     <>
-      <form className='form' onSubmit={handleSubmit}>
-        <h4>login form</h4>
-        <div className='form-row'>
-          <label htmlFor='email' className='form-label'>
+      <form className="form" onSubmit={handleRegister}>
+        <h4>Registration Form</h4>
+        <div className="form-row">
+          <label htmlFor="firstName" className="form-label">
+            Name
+          </label>
+          <input
+            type="text"
+            id="firstName"
+            className="form-input"
+            value={registerData.firstName}
+            onChange={(e) =>
+              setRegisterData({ ...registerData, firstName: e.target.value })
+            }
+          />
+        </div>
+        <div className="form-row">
+          <label htmlFor="email" className="form-label">
             Email
           </label>
           <input
-            type='email'
-            className='form-input email-input'
-            name='email'
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            type="email"
+            id="email"
+            className="form-input"
+            value={registerData.email}
+            onChange={( e) => setRegisterData({ ...registerData, email: e.target.value })
+            }
           />
         </div>
-        <div className='form-row'>
-          <label htmlFor='password' className='form-label'>
-            Password
+        <div className="form-row">
+          <label htmlFor="password" className="form-label">
+          Password
           </label>
           <input
-            type='password'
-            name='password'
-            className='form-input password-input'
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            type="password"
+            id="password"
+            className="form-input"
+            value={registerData.password}
+            onChange={(e) =>
+              setRegisterData({ ...registerData, password: e.target.value })
+            }
           />
         </div>
-        <button type='submit' className='btn btn-block submit-btn'>
-          submit
+        <button type="submit" className="btn btn-block submit-btn">
+        Register
         </button>
       </form>
-      <div className='container'>
-        <button className='btn testing-btn' onClick={fetchTesting}>
-          Testing
+
+      <form className="form" onSubmit={handleLogin}>
+        <h4>Login Form</h4>
+        <div className="form-row">
+          <label htmlFor="email" className="form-label">
+            Email
+          </label>
+          <input
+            type="email"
+            id="email"
+            className="form-input"
+            value={loginData.email}
+            onChange={(e) =>
+              setLoginData({ ...loginData, email: e.target.value })
+            }
+          />
+        </div>
+        <div className="form-row">
+          <label htmlFor="password" className="form-label">
+          Password
+          </label>
+          <input
+            type="password"
+            id="password"
+            className="form-input"
+            value={loginData.password}
+            onChange={(e) =>
+              setLoginData({ ...loginData, password: e.target.value })
+            }
+          />
+        </div>
+        <button type="submit" className="btn btn-block submit-btn">
+        Login
         </button>
-        <button className='btn logout-btn' onClick={fetchLogout}>
-          Logout
-        </button>
-      </div>
+      </form>
     </>
   );
 }
