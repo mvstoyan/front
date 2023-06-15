@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import { Link, Navigate } from 'react-router-dom';
-
-const rootUrl = 'https://e-commerce-silkland.onrender.com';
+import { Link } from 'react-router-dom';
 
 const Register = ({ handleRegister }) => {
   const [email, setEmail] = useState('');
@@ -10,11 +8,10 @@ const Register = ({ handleRegister }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!email || !password) return;
-
     const user = { email, password };
     handleRegister(user);
   };
-
+  
   return (
     <div>
       <h1>Registration Form</h1>

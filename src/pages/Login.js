@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-const rootUrl = 'https://e-commerce-silkland.onrender.com';
+
 
 const Login = ({ handleLogin }) => {
   const [email, setEmail] = useState('');
@@ -10,7 +10,6 @@ const Login = ({ handleLogin }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!email || !password) return;
-
     const user = { email, password };
     handleLogin(user);
   };
