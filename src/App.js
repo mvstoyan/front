@@ -6,17 +6,37 @@ import Register from './pages/Register';
 import { handleRegister, handleLogin, handleLogout } from './components/api';
 
 const App = () => {
-  // eslint-disable-next-line
   const [isLoggedIn, setLoggedIn] = useState(false);
+  const [isLoading, setLoading] = useState(true);
+
+  const handleUserLogin = async (user) => {
+    setLoading(true);
+    const success = await handleLogin(user);
+    if (success) {
+      setLoggedIn(true);
+    }
+    setLoading(false);
+  };
+
+  const handleUserLogout = async () => {
+    setLoading(true);
+    const success = await handleLogout();
+    if (success) {
+      setLoggedIn(false);
+    }
+    setLoading(false);
+  };
 
   return (
     <Router>
       <nav>
         <Link to="/">Home</Link>
-        {!isLoggedIn ? (
-          <Link to="/login">Login</Link>
+        {isLoading ? (
+          <span>Loading...</span>
+        ) : isLoggedIn ? (
+          <button onClick={handleUserLogout}>Logout</button>
         ) : (
-          <button onClick={handleLogout}>Logout</button>
+          <Link to="/login">Login</Link>
         )}
       </nav>
 
@@ -24,7 +44,7 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route
           path="/login"
-          element={!isLoggedIn ? <Login handleLogin={handleLogin} /> : <Navigate to="/" replace />}
+          element={!isLoggedIn ? <Login handleLogin={handleUserLogin} /> : <Navigate to="/" replace />}
         />
         <Route
           path="/register"
