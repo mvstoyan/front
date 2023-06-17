@@ -7,7 +7,7 @@ import { handleRegister, handleLogin, handleLogout } from './components/api';
 
 const App = () => {
   const [isLoggedIn, setLoggedIn] = useState(false);
-  const [isLoading, setLoading] = useState(true);
+  const [isLoading, setLoading] = useState(false);
 
   const handleUserLogin = async (user) => {
     setLoading(true);
